@@ -81,15 +81,17 @@ resource "aws_security_group" "main" {
   tags = { Name = "ZabbixSecurityGroup" }
 }
 
-# Template File para carregar o script de User Data externo
+
 data "local_file" "user_data" {
-  filename = "${path.module}/../scripts/user_data.sh"
+  filename = "${path.module}/scripts/user_data.sh"
 }
 
 
-# Criar a Instância EC2
+
+
+
 resource "aws_instance" "zabbix_server" {
-  ami           = "ami-0e2c8caa4b6378d8c" # AMI Ubuntu 24.04
+  ami           = "ami-0e2c8caa4b6378d8c" 
   instance_type = var.instance_type
   key_name      = var.key_name
   subnet_id     = aws_subnet.main.id
@@ -97,7 +99,7 @@ resource "aws_instance" "zabbix_server" {
   vpc_security_group_ids      = [aws_security_group.main.id]
   associate_public_ip_address = true
 
-  # Adicionar o script de User Data externo
+  
   user_data = data.local_file.user_data.content
 
   tags = { Name = "ZabbixServerInstance" }
