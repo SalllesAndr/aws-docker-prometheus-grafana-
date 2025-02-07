@@ -44,7 +44,7 @@ sudo systemctl start docker
 echo "📌 Clonando o repositório stack-prometheus..."
 # Clona o repositório stack-prometheus na EC2
 cd /home/ubuntu
-git clone https://github.com/seu-usuario/seu-repo-stack-prometheus.git stack-prometheus
+git clone https://github.com/SalllesAndr/aws-docker-prometheus-grafana- stack-prometheus
 
 echo "📌 Ajustando permissões..."
 # Corrige permissões para evitar problemas na execução dos containers

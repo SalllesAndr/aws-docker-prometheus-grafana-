@@ -1,12 +1,2 @@
-terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-  }
-}
-
-provider "aws" {
-  region = "us-east-1"
-}
+instance_type = "t3.large"
+key_name      = "terraform-lab"
