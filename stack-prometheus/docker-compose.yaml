@@ -1,4 +1,4 @@
-version: "3.8"
+version: '3'
 
 services:
   reverse:
@@ -6,36 +6,24 @@ services:
     hostname: reverse_proxy
     image: nginx:latest
     ports:
-      - "80:80"
-      - "443:443"
+      - 80:80
+      - 443:443
     volumes:
       - ./nginx:/etc/nginx
       - ./ssl:/etc/ssl/private
     restart: unless-stopped
-    depends_on:
-      - letsencrypt
 
   prometheus:
     container_name: prometheus
     hostname: prometheus
     image: prom/prometheus:latest
     ports:
-      - "9090:9090"
+      - 9090:9090
     volumes:
       - ./prometheus:/etc/prometheus
     restart: unless-stopped
-    command: --web.enable-lifecycle --config.file=/etc/prometheus/prometheus.yml
-    depends_on:
-      node-exporter:
-        condition: service_started
-      docker-exporter:
-        condition: service_started
-    healthcheck:
-      test: ["CMD", "wget", "--spider", "-q", "http://localhost:9090/-/healthy"]
-      interval: 30s
-      timeout: 10s
-      retries: 3
-
+    command: --web.enable-lifecycle  --config.file=/etc/prometheus/prometheus.yml
+  
   node-exporter:
     container_name: node-exporter
     hostname: node-exporter
@@ -44,13 +32,13 @@ services:
       - /proc:/host/proc:ro
       - /sys:/host/sys:ro
       - /:/rootfs:ro
-    command:
-      - "--path.procfs=/host/proc"
-      - "--path.sysfs=/host/sys"
+    command: 
+      - '--path.procfs=/host/proc' 
+      - '--path.sysfs=/host/sys'
       - --collector.filesystem.ignored-mount-points
       - "^/(sys|proc|dev|host|etc|rootfs/var/lib/docker/containers|rootfs/var/lib/docker/overlay2|rootfs/run/docker/netns|rootfs/var/lib/docker/aufs)($$|/)"
     ports:
-      - "9100:9100"
+      - 9100:9100
     restart: unless-stopped
 
   docker-exporter:
@@ -60,22 +48,19 @@ services:
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
     ports:
-      - "9417:9417"
-    restart: unless-stopped
+      - 9417:9417
+    restart: always
 
   grafana:
     container_name: grafana
     hostname: grafana
     image: grafana/grafana:latest
     ports:
-      - "3000:3000"
+      - 3031:3000
     volumes:
       - grafana-storage:/var/lib/grafana
     restart: unless-stopped
-    depends_on:
-      prometheus:
-        condition: service_healthy
-
+  
   portainer:
     container_name: portainer
     hostname: portainer
@@ -87,22 +72,22 @@ services:
       - portainer_data:/data
       - /var/run/docker.sock:/var/run/docker.sock
     restart: always
-
+  
   letsencrypt:
+    image: linuxserver/letsencrypt
     container_name: letsencrypt
-    image: linuxserver/swag # Substituído de linuxserver/letsencrypt para linuxserver/swag
     environment:
       - PUID=1000
       - PGID=1000
       - TZ=America/Sao_Paulo
-      - URL=sallesarchcloud.com.br
-      - SUBDOMAINS=wildcard
+      - URL=example.com
+      - SUBDOMAINS=wildcard,
       - VALIDATION=dns
       - DNSPLUGIN=cloudflare
-      - EMAIL=email@sallesarchcloud.com.br
+      - EMAIL=email@example.com
       - DHLEVEL=4096
     volumes:
-      - ./letsencrypt:/config
+      - ./config:/config
     restart: unless-stopped
 
 volumes:

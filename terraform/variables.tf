@@ -1,15 +1,12 @@
-variable "instance_type" {
-  description = "Tipo de máquina EC2"
-  type        = string
-  default     = "t3.large"
+terraform {
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 5.0"
+    }
+  }
 }
 
-variable "key_name" {
-  description = "Nome da chave SSH para acessar a instância"
-  type        = string
-}
-
-variable "docker_compose_version" {
-  description = "The version of Docker Compose to install"
-  default     = "2.22.0"
+provider "aws" {
+  region = "us-east-1"
 }
