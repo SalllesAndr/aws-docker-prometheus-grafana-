@@ -97,11 +97,11 @@ services:
       - PUID=1000
       - PGID=1000
       - TZ=America/Sao_Paulo
-      - URL=sallesarchcloud.com.br #substitua pelo domínio real
+      - URL=meudominio.com.br #substitua pelo domínio real
       - SUBDOMAINS=wildcard
       - VALIDATION=dns
       - DNSPLUGIN=cloudflare
-      - EMAIL=email@sallesarchcloud.com.br #substitua pelo seu e-mail real
+      - EMAIL=email@meudominio.com.br #substitua pelo seu e-mail real
       - DHLEVEL=4096
     volumes:
       - ./letsencrypt:/config
